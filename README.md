@@ -1,2 +1,3 @@
-# udemy-aws-certified-cloud-practitioner
-My personal notes for Udemy AWS Certified Cloud Practitioner course
+# udemy-aws-cloud-practitioner
+
+My personal notes for the **[Ultimate AWS Certified Cloud Practitioner - 2022]** course on Udemy by Stephane Maarek.
