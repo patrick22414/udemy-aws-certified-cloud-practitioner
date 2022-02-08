@@ -209,7 +209,7 @@ Many capabilities:
     - 3-year reservation
 - Dedicated Instances
 
-# Section 6: EC2 Instance Storage
+# Section 6 - EC2 Instance Storage
 
 - **EBS** (Elastic Block Storage)
     - Network drive
@@ -233,7 +233,7 @@ Many capabilities:
     - **FSx for Lustre** (for High Performance Computing)
     - **FSx for Windows File Server** (Windows-native)
 
-# Section 7: ELB & ASG
+# Section 7 - ELB & ASG
 
 Elastic Load Balancing and Auto Scaling Groups
 
@@ -278,7 +278,7 @@ Elastic Load Balancing and Auto Scaling Groups
         - Scheduled scaling
     - Predictive scaling
 
-# Section 8: S3
+# Section 8 - S3
 
 - “Infinitely scaling” storage
 - Use cases:
@@ -381,4 +381,259 @@ Elastic Load Balancing and Auto Scaling Groups
 - Snowmobile (<100PB, exabyte-scale)
 - Data migration & Edge computing
 
-# Section 9: Databases
+# Section 9 - Databases
+
+- Data in files vs Data is databases
+    - Structured
+    - Indexing
+    - Relationships
+- Relational Databases
+    - SQL
+- Non-relational Databases (NoSQL)
+- Shared Responsibility of databases on AWS
+    - AWS managed databases
+        - 
+    - EC2 hosted databases
+        - 
+
+## AWS RDS (Relational Database Service)
+
+- Managed RD by AWS
+    - Postgres
+    - MySQL
+    - ...
+- RDS Read Replicas
+    - (Same-AZ) Read replicas
+        - Scale the read workload
+        - 5 replicas at most
+    - Multi-AZ read replicas
+        - Failover
+        - 1 failover AZ at most
+    - Multi-Region
+        - Disaster recovery for region issue
+        - Local performance for global reads
+        - Replication cost
+
+## Amazon Aurora
+
+- “AWS” cloud-optimised (5x MySQL perf, 3x Postgres pref)
+
+## ElastiCache
+
+- Managed Redis or Memcached
+- In-memory databases
+    - High perf and low latency
+- Reduce load off databases
+
+## DynamoDB
+
+- Fully managed highly available with replication across 3 AZs
+- **NoSQL** Key-value database
+- Massive scale, distributedd, **serverless** database
+- Low-latency retrieval
+- DynamoDB Accelerator (DBX)
+    - Fully managed in-memory cache for DynamoDB
+    - 10x pref improvements
+- DynamoDB Global Table
+    - Low-latency read and write **across regions**
+    - Active-active replication
+
+## Redshift
+
+- Based on PostgresSQL (SQL interface)
+- **Analytics** and **data warehousing** (OLAP - online analytical processing)
+- Load data once every hour
+- Scale to PBs of data
+- **Columnar**
+- Massively Parallel Query Execution (MPP) with SQL support
+- BI tools integresion (AWS Quicksight / Tableau)
+
+## Amazon EMR (Elastic MapReduce)
+
+- Hadoop clusters
+    - a cluster can be made of hundreds of EC2 instances
+
+## Amazon Athena
+
+- Serverless query service to perform analytics against S3 objects
+- Use compressed or columnar data for cost-saving
+
+## Quicksight
+
+- Serverless
+    - Machine learning-powered
+        - Business intelligence service
+            - to create interative dashboards
+- Integrated with RDS, Aurora, Athena, Redshit, S3...
+
+## DocumentDB
+
+- “AWS-implementation” for MongoDB
+    - similar to Aurora to Postgres / MySQL
+- NoSQL
+
+## Neptune
+
+- Managed **Graph** database
+
+## QLDB
+
+- Quantum Ledger Database
+- Recording financial transactions
+- Immutable; review all changes made to your data
+- No decentralisation - compliant with financial regulations
+
+## Amazon Managed Blockchain
+
+- Decentralised
+- Compatible with Hyperledger Fabric and Ethereum
+
+## DMS (Database Migration Servive)
+
+- Src DB → EC2 → Dst DB
+- Sec DB remains available during migration
+- Homogeneous or Heterogeneous migration
+
+## AWS Glue
+
+- Managed **extract, transform, and load** (ETL) service
+- Prepare and transform data for analytics
+- Serverless
+- Glue Data Catalog
+
+## Databases and Analytics Summary
+
+- **Relational Databases - OLTP**: RDS & Aurora
+- **Read replicas, Multi-AZ**, Multi-Region
+- **In-memory database**: ElastiCache
+- **Key-value database**: DynamoDB (with DynamoDB Accelerator cache)
+- **Data warehousing** - OLAP: Redshift (SQL)
+- **Hadoop Cluster**: EMR
+- **Athena**: query data on S3 (serverless and SQL)
+- **QuickSight**: serverless dashboards
+- **DocumentDB**: “Aurora for MongoDB” (JSON and NoSQL)
+- **Amazon QLDB**: financial ledger, centralised
+- **Amazon Managed Blockchain**: managed blockchains, decentralised
+- **Glue**: managed ETL
+- **DMS**: Database Migration Service
+- **Neptune**: graph database
+
+# Section 10 - Other Services
+
+## Containers
+
+### ECS (Elastic Container Service)
+
+- Launch Docker containers on AWS
+- *You must provision the infrastructure yourself (EC2 instances)*
+- AWS manages starting / stopping containers
+- Application Load Balancer integration
+
+### Fargate
+
+- Launch Docker containers on AWS - serverless!
+- *You do not provision the infrastructure*
+- AWS runs containers based on your CPU/RAM need
+
+### ECR (Elastic Container Registry)
+
+- Private Docker register on AWS
+
+## Lambda
+
+- Event-driven
+- Pay per request and compute time
+- Versus EC2
+    - Virtual functions - serverless!
+    - Limited by time (vs limited by CPU and RAM)
+    - Run on-demand
+    - Automatd scaling
+
+## API Gateway
+
+- Build serverless (RESTful and WebSocket) APIs
+- Client → *REST API* → API Gateway → *Proxy request* → Lambda → *CRUD* → DynamoDB
+
+## AWS Batch
+
+- Fully managed batch processing jobs at any scale
+- Versus Lambda
+    - No time limit
+    - Any runtime (Docker images)
+    - Rely on EBS or instance storage
+    - Has servers (EC2s managed by AWS)
+
+## Amazon Lightsail
+
+- Much simpler
+- For people with *little* cloud experience
+- High availability, no auto-scaling, limited AWS integration
+
+# Section 15 - VPC & Networking
+
+## Virtual Private Cloud
+
+- A VPC is a Regional resource
+- **Subnets**: partition your network inside your VPC
+    - Subnets are AZ resources
+    - A **public subnet** is accessible from the internet
+        - EC2, Load Balancer, ...
+    - A **private subnet** is not accessible
+        - EC2, Databases, ... (added security)
+    - **Route Tables**: define access to the internet and between subnets
+    - CIDR range: cidr.xyz
+- Internet Gateways (IGW)
+    - Connect VPC to the internet
+- NAT Gateways (AWS-managed) & NAT instances (self-managed)
+    - Allow your private subnets to access the internet while remaining private
+
+## Security Groups and Network ACL
+
+- NACL (Network Access Control List)
+    - A firewall controls traffic to and from subnets
+    - ALLOW or DENY
+    - Rules include IP addresses
+    - Is stateless: return traffic must be explicitly allowed
+- Security Groups
+    - A firewall controls traffic to and from an ENI / EC2 instance
+    - ALLOW only
+    - Rules include IP addresses and other SGs
+    - Is stateful: return traffic is automatically allowed
+
+## VPC Flow Logs and Peering
+
+- Flow logs
+    - Capture information about IP traffic going into your interfaces
+        - VPC flow logs
+        - Subnet flow logs
+        - ENI (Elastic Network Interface) flow logs
+    - Can capture flow to AWS managed services as well
+    - Destination: AWS CloudWatch logs or S3 buckets
+- Peering
+    - Connect 2 VPCs
+        - behave as if they are in the same network
+    - NOT transitive
+
+## VPC Endpoints
+
+- Endpoints allow you to connect to AWS services using a *private network*
+- **Endpoint Gateway**: connect to S3 and DynamoDB
+- **Endpoint Interface**: connect to other services
+
+## Site-toSite VPN & Direct Connect
+
+- Connect on-premise Datacentres to AWS VPC
+- Site-to-Site VPN
+    - Encrypted connection through public internet
+    - On-premise DC → Customer Gateway (CGW) → Virtual Private Gateway (VGW) → AWS
+- Direct Connect (DX)
+    - A physical connection between on-premise and AWS
+    - More private
+    - Expensive and takes time to establish
+
+## Transit Gateway
+
+- Transitive peering between *thousands* of VPCs and on-premises
+- Hub-and-spoke
+- Works with AWS VPCs, VPN connections, Direct Connect
+- A single gateway
